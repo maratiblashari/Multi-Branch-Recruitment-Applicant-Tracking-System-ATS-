@@ -17,11 +17,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ── Routes ──
-app.use('/api/auth',         require('./routes/authRoutes'));
-app.use('/api/jobs',         require('./routes/jobRoutes'));
-app.use('/api/applications', require('./routes/applicationRoutes'));
-app.use('/api/interviews',   require('./routes/interviewRoutes'));
-app.use('/api/branches',     require('./routes/branchRoutes'));
+const apiRouter = express.Router();
+apiRouter.use('/auth',         require('./routes/authRoutes'));
+apiRouter.use('/jobs',         require('./routes/jobRoutes'));
+apiRouter.use('/applications', require('./routes/applicationRoutes'));
+apiRouter.use('/interviews',   require('./routes/interviewRoutes'));
+apiRouter.use('/branches',     require('./routes/branchRoutes'));
+
+app.use('/api', apiRouter);
+app.use('/', apiRouter);
 
 // ── Health Check ──
 app.get('/', (req, res) => {
